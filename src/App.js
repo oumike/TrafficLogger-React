@@ -1,126 +1,54 @@
 import React, { Component } from 'react'
-import './App.css';
+import './App.css'
 
-function Square(props) {
-  return (
-      <button className="square" onClick={() => props.onClick()}>
-        {props.value}
-      </button>
-    )
-}
-
-class Board extends Component {
+class TrafficLogGrid extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true
+      logs: buildDummyData()
     }
   }
 
-  handleClick(i) {
-    const squares = this.state.squares.slice()
-    if (calculateGameState(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O'
-    this.setState({squares: squares, xIsNext: !this.state.xIsNext})
+  renderRow = (rowId) => {
+    return <TrafficLogRow
+              rowId={rowId}
+              rowName={this.state.logs[rowId]["name"]}
+              rowDay={this.state.logs[rowId]["day"]}
+           />
   }
 
-  renderSquare(i) {
-    return <Square 
-              value={this.state.squares[i]} 
-              onClick={() => this.handleClick(i)}
-            />
-  }
-
-  render() {
-
-    const winner = calculateGameState(this.state.squares)
-    let status
-    if (winner && winner != "D") {
-      status = 'Winner: ' + winner
-    } else if (winner == "D") {
-      status = "No winner, draw"
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
-    }
-
+  render = () => {
     return (
       <div>
-        <div className="status">{status}</div>
-        <div class="boardRow">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div class="boardRow">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div class="boardRow">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
+        {this.renderRow(0)}
+        {this.renderRow(1)}
+      </div>    
     )
   }
 }
 
-class Game extends Component {
-  render() {
+class TrafficLogRow extends Component {
+  render = () => {
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol> {/* TODO */}</ol>
-        </div>
+      <div>
+        {this.props.rowId} {this.props.rowName} {this.props.rowDay}
       </div>
     )
   }
 }
 
-function calculateGameState(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (let i=0; i<lines.length; i++) {
-    const[a, b, c] = lines[i]
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a]
-    } 
-  }
-
-  let isDraw = true
-  squares.forEach((square) => {
-    isDraw = (square) ? isDraw : false
-  })
-
-  if (isDraw) {
-    return "D"
-  }
-
-  return;
+const buildDummyData = () => {
+  return ([
+    {id: 0, name: "Blob", day: "Monday"},
+    {id: 1, name: "Jerk", day: "Tuesday"}
+  ])
 }
 
-function App() {
+const App = () => {
   return (
-    <Game />
-  );
+    <TrafficLogGrid />
+  )
 }
 
-export default App;
+export default App
