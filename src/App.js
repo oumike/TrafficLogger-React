@@ -6,8 +6,21 @@ class TrafficLogGrid extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      logs: buildDummyData()
+      logs: buildDummyData(),
+      apiUrl: "http://localhost:5000/"
     }
+  }
+
+  componentDidMount = () => {
+    fetch(this.state.apiUrl + "tlogs", 
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => console.log("DATA: " + data))
+      .catch(error => console.log("ERROR: " + error))
   }
 
   renderRow = (rowId) => {
