@@ -7,12 +7,12 @@ class TrafficLogGrid extends Component {
     super(props)
     this.state = {
       logs: buildDummyData(),
-      apiUrl: "http://localhost:5000/"
+      apiUrl: "http://localhost:8080/"
     }
   }
 
   componentDidMount = () => {
-    fetch(this.state.apiUrl + "tlogs", 
+    fetch(this.state.apiUrl + "tlogs",
       {
         headers: {
           'Content-Type': 'application/json'
@@ -25,10 +25,10 @@ class TrafficLogGrid extends Component {
 
   renderRow = (rowId) => {
     return <TrafficLogRow
-              rowId={rowId}
-              rowName={this.state.logs[rowId]["name"]}
-              rowDay={this.state.logs[rowId]["day"]}
-           />
+      rowId={rowId}
+      rowName={this.state.logs[rowId]["name"]}
+      rowDay={this.state.logs[rowId]["day"]}
+    />
   }
 
   render = () => {
@@ -36,25 +36,20 @@ class TrafficLogGrid extends Component {
       <div>
         {this.renderRow(0)}
         {this.renderRow(1)}
-      </div>    
-    )
-  }
-}
-
-class TrafficLogRow extends Component {
-  render = () => {
-    return (
-      <div>
-        {this.props.rowId} {this.props.rowName} {this.props.rowDay}
       </div>
     )
   }
 }
 
+const TrafficLogRow = (props) =>
+  <div>
+    {props.rowId} {props.rowName} {props.rowDay}
+  </div>
+
 const buildDummyData = () => {
   return ([
-    {id: 0, name: "Blob", day: "Monday"},
-    {id: 1, name: "Jerk", day: "Tuesday"}
+    { id: 0, name: "Blob", day: "Monday" },
+    { id: 1, name: "Jerk", day: "Tuesday" }
   ])
 }
 
